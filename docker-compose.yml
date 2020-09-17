@@ -1,0 +1,25 @@
+version: "3"
+
+volumes:
+ postgres_data_dev: {}
+ postgres_backup_dev: {}
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=barter
+      - POSTGRES_USER=osezno
+      - POSTGRES_PASSWORD=1ab2c3d4e5
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+      - postgres_backup_dev:/backups
+  web:
+    build: .
+    command: sails lift --port 8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
