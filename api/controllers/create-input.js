@@ -23,7 +23,7 @@ module.exports = {
     },
 
 
-    fn: async function (inputs, exits) {
+    fn: async function (inputs, exits)  {
         var mensaje = inputs.mensaje;
         if (typeof mensaje !== "undefined") {
           

@@ -44,4 +44,6 @@ Note:  Generators are usually run using the globally-installed `sails` CLI (comm
 
 # checa que este instalado el orm
  npm ls sails-hook-orm
+ sails generate api 
+ sails generate helper 
 

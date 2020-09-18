@@ -52,10 +52,9 @@ module.exports.datastores = {
     // url: 'mysql://user:password@host:port/database',
     adapter: 'sails-postgresql',
     //outside docker
-    // url: 'postgresql://postgres:postgres@localhost:5434/SailsDB',
+    url: 'postgresql://postgres:postgres@localhost:5434/SailsDB',
     //inside docker
-    adapter: 'sails-postgresql',
-    url: 'postgresql://osezno:1ab2c3d4e5@db:5432/c0t1z4', 
+   // url: 'postgresql://osezno:1ab2c3d4e5@db:5432/c0t1z4', 
   },
 
 

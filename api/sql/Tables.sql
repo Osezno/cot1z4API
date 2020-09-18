@@ -9,23 +9,22 @@ CREATE SCHEMA cot;
 --    mensaje    TEXT NOT NULL
 -- );
 
-CREATE TABLE cot.sesiones (
-  idsesion                  SERIAL PRIMARY KEY,
-  id_estatus                INTEGER REFERENCES cot.estatus(idcat_estatus) NOT NULL,
-  idusuario                 INTEGER REFERENCES cot.usuarios(idusuario),
-  clave                     TEXT NOT NULL UNIQUE,
-  fecha_real                TIMESTAMP NOT NULL,
-  fecha_actualizacion       TIMESTAMP NOT NULL,
-  idusuario_actualizacion   INTEGER REFERENCES cot.usuarios(idusuario)
-);
--- //revisar formas optimas de manejar las sesiones
 
+--ABC DE USUARIOS
 CREATE TABLE cot.roles(
   "createdAt"     TIMESTAMP NOT NULL,
   "updatedAt"     TIMESTAMP NOT NULL,
    id             SERIAL PRIMARY KEY,
    codigo         TEXT NOT NULL UNIQUE,
-   descripcion    TEXT NOT NULL
+   descripcion    TEXT NOT NULL,
+);
+
+CREATE TABLE cot.estatus(
+  "createdAt"     TIMESTAMP NOT NULL,
+  "updatedAt"     TIMESTAMP NOT NULL,
+   id             SERIAL PRIMARY KEY,
+   codigo         TEXT NOT NULL UNIQUE,
+   descripcion    TEXT NOT NULL,
 );
 
 CREATE TABLE cot.usuarios (
@@ -33,14 +32,25 @@ CREATE TABLE cot.usuarios (
     "updatedAt"               bigint NOT NULL,
     id                        SERIAL PRIMARY KEY,
     id_rol                    INTEGER REFERENCES cot.roles(id) NOT NULL,
+    id_estatus                INTEGER REFERENCES cot.estatus(id) NOT NULL,
     nombre                    TEXT NOT NULL,
     email                     TEXT NOT NULL,
     password                  TEXT NOT NULL,
-    fotografia                             ,
-    telefono                               ,
-    intereses                              ,
+    fotografia                TEXT NOT NULL,
+    telefono                  TEXT NOT NULL,
 );
 
+CREATE TABLE cot.sesiones (
+  idsesion                  SERIAL PRIMARY KEY,
+  --id_estatus                INTEGER REFERENCES cot.estatus(idcat_estatus) NOT NULL,
+  idusuario                 INTEGER REFERENCES cot.usuarios(idusuario),
+  clave                     TEXT NOT NULL UNIQUE,
+  fecha_real                TIMESTAMP NOT NULL,
+  fecha_actualizacion       TIMESTAMP NOT NULL,
+);
+--sera necesario saber el tiempo que pasan en
+-- // revisar formas optimas de manejar las sesiones
+--ABC DE USUARIOS
 
 
 -- basicos
