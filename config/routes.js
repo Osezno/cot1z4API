@@ -43,18 +43,17 @@ module.exports.routes = {
 
 
   //ABC DE USUARIOS
-  'post /api/v1/nuevo-usuario'         : 'UsuarioController.nuevoUsuario',
-  'post /api/v1/eliminar-usuario'      : 'UsuarioController.eliminarUsuario',
-  'post /api/v1/editar-usuario'        : 'UsuarioController.editarUsuario',
-  'get /api/v1/ver-usuario'            : 'UsuarioController.verUsuario',
-  'get /api/v1/ver-usuarios'           : 'UsuarioController.verUsuarios',
-  'post /api/v1/login'                 : 'UsuarioController.login',
-  'post /api/v1/logout'                : 'UsuarioController.logout',
-
-
+  'post /api/v1/nuevo-usuario'         : 'UsuariosController.nuevoUsuario',
+  'post /api/v1/eliminar-usuario'      : 'UsuariosController.eliminarUsuario',
+  'post /api/v1/editar-usuario'        : 'UsuariosController.editarUsuario',
+  'get /api/v1/ver-usuario'            : 'UsuariosController.verUsuario',
+  'get /api/v1/ver-usuarios'           : 'UsuariosController.verUsuarios',
+  'post /api/v1/login'                 : 'SesionesController.login',
+  'post /api/v1/logout'                : 'SesionesController.logout',
+  //test first conection
   'POST  /api/v1/create-input': { action: 'create-input' },
   'GET   /api/v1/read-inputs': { action: 'read-inputs' }
-// si esta en una carpeta agregar { action: 'carpeta/read-inputs' }
+   // si esta en una carpeta agregar { action: 'carpeta/read-inputs' }
 
   //  ╔═╗╔═╗╦  ╔═╗╔╗╔╔╦╗╔═╗╔═╗╦╔╗╔╔╦╗╔═╗
   //  ╠═╣╠═╝║  ║╣ ║║║ ║║╠═╝║ ║║║║║ ║ ╚═╗
