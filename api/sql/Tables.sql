@@ -1,26 +1,26 @@
-CREATE SCHEMA tq;
+CREATE SCHEMA cot;
 
 /*para prueba*/
-CREATE TABLE tq.inputs(
-  "createdAt"     TIMESTAMP NOT NULL,
-  "updatedAt"     TIMESTAMP NOT NULL,
-   id             SERIAL PRIMARY KEY,
-   status         TEXT NOT NULL ,
-   mensaje    TEXT NOT NULL
-);
+-- CREATE TABLE cot.inputs(
+--   "createdAt"     TIMESTAMP NOT NULL,
+--   "updatedAt"     TIMESTAMP NOT NULL,
+--    id             SERIAL PRIMARY KEY,
+--    status         TEXT NOT NULL ,
+--    mensaje    TEXT NOT NULL
+-- );
 
-CREATE TABLE tq.sesiones (
+CREATE TABLE cot.sesiones (
   idsesion                  SERIAL PRIMARY KEY,
-  id_estatus                INTEGER REFERENCES tq.estatus(idcat_estatus) NOT NULL,
-  idusuario                 INTEGER REFERENCES tq.usuarios(idusuario),
+  id_estatus                INTEGER REFERENCES cot.estatus(idcat_estatus) NOT NULL,
+  idusuario                 INTEGER REFERENCES cot.usuarios(idusuario),
   clave                     TEXT NOT NULL UNIQUE,
   fecha_real                TIMESTAMP NOT NULL,
   fecha_actualizacion       TIMESTAMP NOT NULL,
-  idusuario_actualizacion   INTEGER REFERENCES tq.usuarios(idusuario)
+  idusuario_actualizacion   INTEGER REFERENCES cot.usuarios(idusuario)
 );
 -- //revisar formas optimas de manejar las sesiones
 
-CREATE TABLE tq.roles(
+CREATE TABLE cot.roles(
   "createdAt"     TIMESTAMP NOT NULL,
   "updatedAt"     TIMESTAMP NOT NULL,
    id             SERIAL PRIMARY KEY,
@@ -28,11 +28,11 @@ CREATE TABLE tq.roles(
    descripcion    TEXT NOT NULL
 );
 
-CREATE TABLE tq.usuarios (
+CREATE TABLE cot.usuarios (
     "createdAt"               bigint NOT NULL,
     "updatedAt"               bigint NOT NULL,
     id                        SERIAL PRIMARY KEY,
-    id_rol                    INTEGER REFERENCES tq.roles(id) NOT NULL,
+    id_rol                    INTEGER REFERENCES cot.roles(id) NOT NULL,
     nombre                    TEXT NOT NULL,
     email                     TEXT NOT NULL,
     password                  TEXT NOT NULL,
@@ -41,7 +41,53 @@ CREATE TABLE tq.usuarios (
     intereses                              ,
 );
 
-CREATE TABLE tq.intereses (
+
+
+-- basicos
+
+CREATE TABLE cot.servicios (
+    "createdAt"               bigint NOT NULL,
+    "updatedAt"               bigint NOT NULL,
+    id                        SERIAL PRIMARY KEY,
+    idusuario                 INTEGER REFERENCES cot.usuarios(idusuario),
+    idstars                   INTEGER REFERENCES cot.stars(idstars),
+    idbien                    INTEGER REFERENCES cot.bien(idbien),
+);
+
+
+CREATE TABLE cot.productos (
+    "createdAt"               bigint NOT NULL,
+    "updatedAt"               bigint NOT NULL,
+    id                        SERIAL PRIMARY KEY,
+    idusuario                 INTEGER REFERENCES cot.usuarios(idusuario),
+    servicio                  BOOLEAN NOT NULL,
+    producto                  BOOLEAN NOT NULL,
+    descripcion               TEXT NOT NULL,
+    fotografia                             ,
+    estaus                                 ,
+    idvalor                   INTEGER REFERENCES cot.unidades_de_valor(idvalor)
+);
+
+CREATE TABLE cot.empresas (
+    "createdAt"               bigint NOT NULL,
+    "updatedAt"               bigint NOT NULL,
+    id                        SERIAL PRIMARY KEY,
+    idusuario                 INTEGER REFERENCES cot.usuarios(idusuario),
+    idstars                   INTEGER REFERENCES cot.stars(idstars),
+    idbien                    INTEGER REFERENCES cot.bien(idbien),
+);
+
+CREATE TABLE cot.clienres (
+    "createdAt"               bigint NOT NULL,
+    "updatedAt"               bigint NOT NULL,
+    id                        SERIAL PRIMARY KEY,
+    idusuario                 INTEGER REFERENCES cot.usuarios(idusuario),
+    idstars                   INTEGER REFERENCES cot.stars(idstars),
+    idbien                    INTEGER REFERENCES cot.bien(idbien),
+);
+
+--practicos
+CREATE TABLE cot.templates (
     "createdAt"               bigint NOT NULL,
     "updatedAt"               bigint NOT NULL,
     id                        SERIAL PRIMARY KEY,
@@ -50,20 +96,7 @@ CREATE TABLE tq.intereses (
     fotografia                             ,
 );
 
-CREATE TABLE tq.bien (
-    "createdAt"               bigint NOT NULL,
-    "updatedAt"               bigint NOT NULL,
-    id                        SERIAL PRIMARY KEY,
-    idusuario                 INTEGER REFERENCES tq.usuarios(idusuario),
-    servicio                  BOOLEAN NOT NULL,
-    producto                  BOOLEAN NOT NULL,
-    descripcion               TEXT NOT NULL,
-    fotografia                             ,
-    estaus                                 ,
-    idvalor                   INTEGER REFERENCES tq.unidades_de_valor(idvalor)
-);
-
-CREATE TABLE tq.unidades_de_valor(
+CREATE TABLE cot.cotizaciones (
     "createdAt"               bigint NOT NULL,
     "updatedAt"               bigint NOT NULL,
     id                        SERIAL PRIMARY KEY,
@@ -71,31 +104,18 @@ CREATE TABLE tq.unidades_de_valor(
     codigo                    TEXT NOT NULL UNIQUE,
     descripcion               TEXT NOT NULL,
 );
+--expedidas
 
-CREATE TABLE tq.ratings (
-    "createdAt"               bigint NOT NULL,
-    "updatedAt"               bigint NOT NULL,
-    id                        SERIAL PRIMARY KEY,
-    idusuario                 INTEGER REFERENCES tq.usuarios(idusuario),
-    idstars                   INTEGER REFERENCES tq.stars(idstars),
-    idbien                    INTEGER REFERENCES tq.bien(idbien),
-);
 
-CREATE TABLE tq.stars (
-    "createdAt"               bigint NOT NULL,
-    "updatedAt"               bigint NOT NULL,
-    id                        SERIAL PRIMARY KEY,
-    numero_de_estrellas       INTEGER
-);
+-- que mas?
+--catalogos para las cotizaciones
+
+
+-- CREATE TABLE cot.reportes (
+--     "createdAt"               bigint NOT NULL,
+--     "updatedAt"               bigint NOT NULL,
+--     id                        SERIAL PRIMARY KEY,
+--     numero_de_estrellas       INTEGER
+-- );
 
 -- ///como se manejara el rating
-
-CREATE TABLE tq.transacciones (
-    "createdAt"               bigint NOT NULL,
-    "updatedAt"               bigint NOT NULL,
-    id                        SERIAL PRIMARY KEY,
-    idusuario1                INTEGER REFERENCES tq.usuarios(idusuario1),
-    idusuario2                INTEGER REFERENCES tq.usuarios(idusuario2),
-    idbien1                   INTEGER REFERENCES tq.bien(idbien1),
-    idbien2                   INTEGER REFERENCES tq.bien(idbien2),
-);

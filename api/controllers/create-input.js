@@ -27,7 +27,7 @@ module.exports = {
         var mensaje = inputs.mensaje;
         if (typeof mensaje !== "undefined") {
           
-            var input = await Inputs.create(Object.assign({ status: 'activo', mensaje: mensaje })).meta({ schemaName: 'tq' });
+            var input = await Inputs.create(Object.assign({ status: 'activo', mensaje: mensaje })).meta({ schemaName: 'cot' });
             return exits.success({ correcto: true, data: input, mensaje: "Input creado exitosamente" });
         }
         else {
