@@ -9,7 +9,34 @@ module.exports = {
 
   attributes: {
 
-    //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
+    id_rol: {
+      type: 'number',
+      required: true
+    },
+    id_estatus: {
+      type: 'number',
+      required: true
+    },
+    nombre: {
+      type: 'string',
+      required: true
+    },
+    email: {
+      type: 'string',
+      required: true
+    },
+    password: {
+      type: 'string',
+      required: true
+    },
+    fotografia: {
+      type: 'string',
+      required: true
+    },
+    telefono: {
+      type: 'string',
+      required: true
+    },
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
 
