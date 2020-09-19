@@ -48,6 +48,7 @@ module.exports.routes = {
   'post /api/v1/editar-usuario'        : 'UsuariosController.editarUsuario',
   'get /api/v1/ver-usuario'            : 'UsuariosController.verUsuario',
   'get /api/v1/ver-usuarios'           : 'UsuariosController.verUsuarios',
+   //MANEJOR DE SESIONES
   'post /api/v1/login'                 : 'SesionesController.login',
   'post /api/v1/logout'                : 'SesionesController.logout',
   //test first conection

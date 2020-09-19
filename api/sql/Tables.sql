@@ -11,25 +11,28 @@ CREATE SCHEMA cot;
 
 
 --ABC DE USUARIOS
+DROP TABLE IF EXISTS cot.roles;
 CREATE TABLE cot.roles(
   "createdAt"     TIMESTAMP NOT NULL,
   "updatedAt"     TIMESTAMP NOT NULL,
    id             SERIAL PRIMARY KEY,
    codigo         TEXT NOT NULL UNIQUE,
-   descripcion    TEXT NOT NULL,
+   descripcion    TEXT NOT NULL
 );
 
+DROP TABLE IF EXISTS cot.estatus;
 CREATE TABLE cot.estatus(
   "createdAt"     TIMESTAMP NOT NULL,
   "updatedAt"     TIMESTAMP NOT NULL,
    id             SERIAL PRIMARY KEY,
    codigo         TEXT NOT NULL UNIQUE,
-   descripcion    TEXT NOT NULL,
+   descripcion    TEXT NOT NULL
 );
 
+DROP TABLE IF EXISTS cot.usuarios;
 CREATE TABLE cot.usuarios (
-    "createdAt"               bigint NOT NULL,
-    "updatedAt"               bigint NOT NULL,
+    "createdAt"               TIMESTAMP NOT NULL,
+    "updatedAt"               TIMESTAMP NOT NULL,
     id                        SERIAL PRIMARY KEY,
     id_rol                    INTEGER REFERENCES cot.roles(id) NOT NULL,
     id_estatus                INTEGER REFERENCES cot.estatus(id) NOT NULL,
@@ -37,7 +40,7 @@ CREATE TABLE cot.usuarios (
     email                     TEXT NOT NULL,
     password                  TEXT NOT NULL,
     fotografia                TEXT NOT NULL,
-    telefono                  TEXT NOT NULL,
+    telefono                  TEXT NOT NULL
 );
 
 CREATE TABLE cot.sesiones (

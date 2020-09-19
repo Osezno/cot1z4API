@@ -8,6 +8,8 @@
 //UTILS
 const invalid = require("../helpers/validations");
 
+const bcrypt = require('bcryptjs');
+
 const resMessage = { success: false, message: "Faltan datos" };
 
 const validate = (data) => {
@@ -32,8 +34,9 @@ const validate = (data) => {
     return { error: false }
 }
 
+
 module.exports = {
-    nuevoUsuario: async  (req, res) => {
+    nuevoUsuario: async (req, res) => {
         let respuesta = { ...resMessage }
         let v = await validate(req.body)
         sails.log(v)
@@ -53,27 +56,37 @@ module.exports = {
 
             //hacer un hash de la password
             // revisar el problema del bigINT
-            let usuario = await Usuarios.create(
-                Object.assign({
-                    id_rol: id_rol,
-                    id_estatus: id_estatus,
-                    nombre: nombre,
-                    email: email,
-                    password: password,
-                    fotografia: fotografia || foto,
-                    telefono: telefono,
-                })).meta({ schemaName: 'cot' });
+            bcrypt.hash(password, 10, async (err, hash) => {
+                // Store hash in your password DB.
+                let usuario = await Usuarios.create(
+                    Object.assign({
+                        id_rol: id_rol,
+                        id_estatus: id_estatus,
+                        nombre: nombre,
+                        email: email,
+                        password: hash,
+                        fotografia: fotografia || foto,
+                        telefono: telefono,
+                    })).meta({ schemaName: 'cot' });
 
-            respuesta.success = true;
-            respuesta.message = "Usuario creado";
-            respuesta["data"] = usuario;
-            return res.json(respuesta)
+                respuesta.success = true;
+                respuesta.message = "Usuario creado";
+                respuesta["data"] = usuario;
+                return res.json(respuesta)
+
+            });
+
+            //for login
+            // bcrypt.compare("B4c0/\/", hash).then((res) => {
+            //     // res === true
+            // });
+
         } else {
             respuesta.message = "El email ya existe en nuestra base de datos";
             return res.json(respuesta);
         }
     },
-    eliminarUsuario: async (req, res) =>{
+    eliminarUsuario: async (req, res) => {
         let respuesta = { ...resMessage }
 
         const { uuid } = req.body;
@@ -102,7 +115,7 @@ module.exports = {
     editarUsuario: async (req, res) => {
         let respuesta = { ...resMessage }
         let v = await validate(req.body)
-
+       
         if (v.error) {
             respuesta.message = v.message;
             return res.json(respuesta)
@@ -125,27 +138,29 @@ module.exports = {
             const { nombre, fotografia, password, email, telefono, id_rol, id_estatus } = req.body;
 
             ////hacer un hash de la password
-            let usuario = await Usuario.updateOne({ id: uuid })
-                .set({
-                    id_rol: id_rol,
-                    id_estatus: id_estatus,
-                    nombre: nombre,
-                    email: email,
-                    password: password,
-                    fotografia: foto,
-                    telefono: telefono,
-                })
+            bcrypt.hash(password, 10, async (err, hash) => {
+                let usuario = await Usuarios.updateOne({ id: uuid })
+                    .set({
+                        id_rol: id_rol,
+                        id_estatus: id_estatus,
+                        nombre: nombre,
+                        email: email,
+                        password: hash,
+                        fotografia: fotografia,
+                        telefono: telefono,
+                    }).meta({ schemaName: 'cot' });
 
-            respuesta.success = true;
-            respuesta.message = "Usuario editado exitosamente!";
-            respuesta["data"] = usuario;
-            return res.json(respuesta)
+                respuesta.success = true;
+                respuesta.message = "Usuario editado exitosamente!";
+                respuesta["data"] = usuario;
+                return res.json(respuesta)
+            });
         }
     },
-    verUsuario: async(req, res)=> {
+    verUsuario: async (req, res) => {
         let respuesta = { ...resMessage }
 
-        const { uuid } = req.body;
+        const { uuid } = req.query;
         if (!uuid) {
             return res.json(respuesta)
         }
@@ -165,13 +180,13 @@ module.exports = {
         }
 
     },
-    verUsuarios:async (req, res) => {
+    verUsuarios: async (req, res) => {
         //que validacion necesitas para este?
         let respuesta = { ...resMessage }
 
-        let usuarios = Usuarios.find({}).meta({ schemaName: 'cot' });
-        
-        if(!usuarios){
+        let usuarios = await Usuarios.find().meta({ schemaName: 'cot' });
+
+        if (!usuarios) {
             respuesta.message = "no existen Usuarios por el momento";
             return res.json(respuesta)
         }
