@@ -4,97 +4,66 @@
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
+const invalid = require("../helpers/validations");
+const general = require("../helpers/general");
+const cat = require("../helpers/catalogs");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { checkPassword } = require("../helpers/validations");
+//const Usuarios = require("../models/Usuarios");
 
-module.exports = {
-  
-    login: function (req, res) {
 
-        var r = {
-            correcto: false,
-            mensaje: "Faltan datos"
-        };
 
-        if (!req.body.hasOwnProperty("username") ||
-            !req.body.hasOwnProperty("password")) {
-            log.info(respuesta.mensaje);
-            return res.json(r);
+
+
+crearToken = (id, secreta, expiracion) => {
+    return jwt.sign({ id }, secreta, { expiresIn: expiracion })
+},
+
+    module.exports = {
+        login: async (req, res) => {
+            const { email } = req.body
+            let respuesta = { ...cat.resMessage }
+            // crear un nuevo session id para el usuario y actualizarlo 
+            let ses_id = await general.genId()
+            // crear token 
+            let token = await crearToken(ses_id, req.secret, "365d")
+            // actualizar el id de sesion en el usuario
+            let u = await Usuarios.updateOne({ email: email })
+            .set({ ses_id: ses_id }).meta({ schemaName: 'cot' });
+            // send sesion to the front
+            respuesta.success = true;
+            respuesta.message = cat.success.login;
+            respuesta["data"] = {
+                token: token,
+                onboard: u.onboard,
+                id_rol: u.id_rol,
+                id_estatus: u.id_estatus,
+                uuid: u.id
+            };
+
+            return res.json(respuesta);
+
+
+        },
+        logout: async (req, res) => {
+
+            const { uuid } = req.body
+            let respuesta = { ...cat.resMessage }
+
+            if (!uuid ) return res.json(respuesta)
+
+            let u = await Usuarios.update({ id: uuid }).set({ ses_id: null }).meta({ schemaName: 'cot' });
+            respuesta.success = true;
+            respuesta.message = cat.success.logout;
+            return res.json(respuesta);
+
+        },
+        forgotPassword: async (req, res) => {
+
         }
-
-        var username = req.body.username;
-        var password = req.body.password;
-
-        var re_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        var re_pass = /^[a-zA-Z0-9_\-\$\*\¡\!]+$/;
-
-        if (typeof username === 'undefined' || username === null || username === '' ||
-            re_email.test(username) == false || username.length < 5 || username.length > 50) {
-            r.mensaje = "El usuario es incorrecto";
-            log.info(r.mensaje);
-            return res.json(r);
-        }
-        else if (typeof password === 'undefined' || password === null || password === '' ||
-            re_pass.test(password) == false || username.length < 8 || username.length > 100) {
-            r.mensaje = "La contraseña es incorrecta";
-            log.info(r.mensaje);
-            return res.json(r);
-        }
-
-        // Usuarios.query("SELECT * FROM hgc.login_adm($1,$2);", [username,password], function(err, results){
-
-        // 	if (err) {
-        // 		sails.log.error(err);
-        // 		r.mensaje = "Error: La sesión no fue iniciada";
-        // 		log.info(r.mensaje);
-        // 		return res.json(r);
-        // 	}
-
-        // 	r.correcto = results.rows[0].correcto;
-        // 	r.mensaje = results.rows[0].mensaje;
-
-        // 	log.info(r.mensaje);
-
-        // 	if (r.correcto) {
-
-        // 		var ses_cd = results.rows[0].ses_cd;
-        // 		var usr_cd = results.rows[0].usr_cd;
-
-        // 		res.cookie("ses_cd", ses_cd, {maxAge: 86400000, httpOnly: true});
-        // 		res.cookie("usr_cd", usr_cd, {maxAge: 86400000, httpOnly: true});
-        // 	}
-
-        // 	return res.json(r);
-        // });
-    },
-
-    logout: function (req, res) {
-
-        var r = {
-            correcto: false,
-            mensaje: "Faltan datos"
-        };
-
-        var ses_cd = req.cookies.ses_cd;
-        var usr_cd = req.cookies.usr_cd;
-
-        res.clearCookie("ses_cd");
-        res.clearCookie("usr_cd");
-
-        // Usuarios.query("SELECT * FROM hgc.logout_adm($1,$2);", [ses_cd,usr_cd], function(err, results){
-
-        // 	if (err) {
-        // 		sails.log.error(err);
-        // 		r.mensaje = "Error: La sesión no fue cerrada";
-        // 		log.info(r.mensaje);
-        // 		return res.json(r);
-        // 	}
-
-        // 	r.correcto = results.rows[0].correcto;
-        // 	r.mensaje = results.rows[0].mensaje;
-
-        // 	log.info(r.mensaje);
-
-        // 	return res.json(r);
-        // });
-    },
-};
+        //revisar si las policies pueden llevar argumentos
+       
+        //forgot password
+    };
 

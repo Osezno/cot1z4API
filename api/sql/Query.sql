@@ -1,3 +1,4 @@
+--init values
 INSERT INTO cot.estatus ("createdAt", "updatedAt", codigo, descripcion) VALUES ( now(), now(),'Activo','Indica que un usuario esta activo para mantener actividad dentro de la aplicación');
 INSERT INTO cot.estatus ("createdAt", "updatedAt", codigo, descripcion) VALUES (now(), now(),'Pendiente', 'Indica que un usuario aun no se confirma para mantener actividad dentro de la aplicación');
 INSERT INTO cot.estatus ("createdAt", "updatedAt", codigo, descripcion) VALUES (now(), now(),'Suspendido', 'Indica que un usuario no está activo para mantener actividad dentro de la aplicación');
@@ -9,3 +10,14 @@ INSERT INTO cot.roles ("createdAt", "updatedAt", codigo, descripcion) VALUES (no
 
 
 INSERT INTO cot.usuarios (idcat_estatus, idcat_rol, clave, email, alias, password, fecha_real, fecha_actualizacion) VALUES (1, 2, md5(extract(epoch from clock_timestamp())::TEXT), 'soporte@soevii.com', 'soporte', md5('root'), now(), now());
+
+
+update cot.usuarios SET onboard = False  WHERE id = 1;
+
+ALTER TABLE cot.usuarios ADD onboard  BOOLEAN NOT NULL;
+
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAuenczZ2EwNmh4c2IiLCJpYXQiOjE2MDA5OTM1NjcsImV4cCI6MTYzMjUyOTU2N30.ymMMfuuvfqe7nW_VD2bm2WpioFhhMfatC6TDOOO33Xg",
+        "onboard": null,
+        "id_rol": 1,
+        "id_estatus": 2,
+        "uuid": 1

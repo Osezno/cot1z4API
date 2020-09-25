@@ -18,5 +18,15 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,
-
+  '*': 'checkAssociateSession',
+  SesionesController: {
+    'login': 'login',
+    'forgotPassword':true,
+  },
+  UsuariosController: {
+    'nuevoUsuario': 'checkAdminSession',
+    'eliminarUsuario': 'checkAdminSession',
+    'verUsuarios': 'checkAdminSession',
+  }
+  
 };

@@ -51,6 +51,7 @@ module.exports.routes = {
    //MANEJOR DE SESIONES
   'post /api/v1/login'                 : 'SesionesController.login',
   'post /api/v1/logout'                : 'SesionesController.logout',
+  'post /api/v1/forgot-password'       : 'SesionesController.forgotPassword',
   //test first conection
   'POST  /api/v1/create-input': { action: 'create-input' },
   'GET   /api/v1/read-inputs': { action: 'read-inputs' }

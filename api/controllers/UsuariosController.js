@@ -7,10 +7,9 @@
 
 //UTILS
 const invalid = require("../helpers/validations");
-
 const bcrypt = require('bcryptjs');
-
-const resMessage = { success: false, message: "Faltan datos" };
+const cat = require("../helpers/catalogs");
+const general = require("../helpers/general");
 
 const validate = (data) => {
     const { nombre, password, email, telefono, id_rol, id_estatus } = data;
@@ -20,15 +19,15 @@ const validate = (data) => {
 
     if (invalid.checkNull(nombre) ||
         invalid.checkLength(nombre, 2, 50)) {
-        return { error: true, message: "El usuario es incorrecto" }
+        return { error: true, message: cat.errors.name}
     }
 
     if (invalid.checkPassword(password)) {
-        return { error: true, message: "La contraseña es incorrecta" }
+        return { error: true, message: cat.errors.password }
     }
 
     if (invalid.checkEmail(email)) {
-        return { error: true, message: "El email es incorrecto" }
+        return { error: true, message:  cat.errors.email }
     }
 
     return { error: false }
@@ -37,9 +36,9 @@ const validate = (data) => {
 
 module.exports = {
     nuevoUsuario: async (req, res) => {
-        let respuesta = { ...resMessage }
+        let respuesta = { ...cat.resMessage }
         let v = await validate(req.body)
-        sails.log(v)
+        
         if (v.error) {
             respuesta.message = v.message;
             return res.json(respuesta)
@@ -67,6 +66,7 @@ module.exports = {
                         password: hash,
                         fotografia: fotografia || foto,
                         telefono: telefono,
+                        onboard: false,
                     })).meta({ schemaName: 'cot' });
 
                 respuesta.success = true;
@@ -76,18 +76,13 @@ module.exports = {
 
             });
 
-            //for login
-            // bcrypt.compare("B4c0/\/", hash).then((res) => {
-            //     // res === true
-            // });
-
         } else {
-            respuesta.message = "El email ya existe en nuestra base de datos";
+            respuesta.message = cat.errors.mailUnavalible;
             return res.json(respuesta);
         }
     },
     eliminarUsuario: async (req, res) => {
-        let respuesta = { ...resMessage }
+        let respuesta = { ...cat.resMessage }
 
         const { uuid } = req.body;
         if (!uuid) {
@@ -99,7 +94,7 @@ module.exports = {
         }).meta({ schemaName: 'cot' });
 
         if (!userExists) {
-            respuesta.message = "El usuario no existe";
+            respuesta.message = cat.errors.noUser;
             return res.json(respuesta);
         } else {
             let usuarioEliminado = await Usuarios.destroyOne({
@@ -113,7 +108,7 @@ module.exports = {
         }
     },
     editarUsuario: async (req, res) => {
-        let respuesta = { ...resMessage }
+        let respuesta = { ...cat.resMessage }
         let v = await validate(req.body)
        
         if (v.error) {
@@ -131,7 +126,7 @@ module.exports = {
         }).meta({ schemaName: 'cot' });
 
         if (!userExists) {
-            respuesta.message = "El usuario no existe";
+            respuesta.message = cat.errors.noUser;
             sails.log(respuesta.message);
             return res.json(respuesta);
         } else {
@@ -158,7 +153,7 @@ module.exports = {
         }
     },
     verUsuario: async (req, res) => {
-        let respuesta = { ...resMessage }
+        let respuesta = { ...cat.resMessage }
 
         const { uuid } = req.query;
         if (!uuid) {
@@ -170,7 +165,7 @@ module.exports = {
         }).meta({ schemaName: 'cot' });
 
         if (!userExists) {
-            respuesta.message = "Usuario no encontrado!";
+            respuesta.message = cat.errors.noUser;
             return res.json(respuesta)
         } else {
             respuesta.success = true;
@@ -182,7 +177,7 @@ module.exports = {
     },
     verUsuarios: async (req, res) => {
         //que validacion necesitas para este?
-        let respuesta = { ...resMessage }
+        let respuesta = { ...cat.resMessage }
 
         let usuarios = await Usuarios.find().meta({ schemaName: 'cot' });
 

@@ -1,7 +1,7 @@
 
 
 module.exports = {
-
+   
     friendlyName: 'Validacion de formularios',
     description: 'Revisar valores vacios.',
     fn: function () {

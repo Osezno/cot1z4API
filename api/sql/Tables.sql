@@ -40,8 +40,11 @@ CREATE TABLE cot.usuarios (
     email                     TEXT NOT NULL,
     password                  TEXT NOT NULL,
     fotografia                TEXT NOT NULL,
-    telefono                  TEXT NOT NULL
+    telefono                  TEXT NOT NULL,
+    onboard                   BOOLEAN NOT NULL,
+    ses_id                    TEXT,
 );
+
 
 CREATE TABLE cot.sesiones (
   idsesion                  SERIAL PRIMARY KEY,
@@ -51,8 +54,7 @@ CREATE TABLE cot.sesiones (
   fecha_real                TIMESTAMP NOT NULL,
   fecha_actualizacion       TIMESTAMP NOT NULL,
 );
---sera necesario saber el tiempo que pasan en
--- // revisar formas optimas de manejar las sesiones
+--sera necesario saber el tiempo que pasan en la plataforma?
 --ABC DE USUARIOS
 
 

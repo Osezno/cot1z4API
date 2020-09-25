@@ -37,6 +37,14 @@ module.exports = {
       type: 'string',
       required: true
     },
+    onboard:{
+      type: 'boolean',
+      required: true
+    },
+    ses_id:{
+      type: 'string',
+      allowNull: true
+    }
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
 
