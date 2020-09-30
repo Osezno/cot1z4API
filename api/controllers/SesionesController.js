@@ -4,23 +4,17 @@
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
-const invalid = require("../helpers/validations");
+
 const general = require("../helpers/general");
 const cat = require("../helpers/catalogs");
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { checkPassword } = require("../helpers/validations");
-//const Usuarios = require("../models/Usuarios");
-
-
-
-
 
 crearToken = (id, secreta, expiracion) => {
     return jwt.sign({ id }, secreta, { expiresIn: expiracion })
 },
 
     module.exports = {
+        
         login: async (req, res) => {
             const { email } = req.body
             let respuesta = { ...cat.resMessage }
@@ -30,7 +24,7 @@ crearToken = (id, secreta, expiracion) => {
             let token = await crearToken(ses_id, req.secret, "365d")
             // actualizar el id de sesion en el usuario
             let u = await Usuarios.updateOne({ email: email })
-            .set({ ses_id: ses_id }).meta({ schemaName: 'cot' });
+                .set({ ses_id: ses_id }).meta({ schemaName: 'cot' });
             // send sesion to the front
             respuesta.success = true;
             respuesta.message = cat.success.login;
@@ -51,7 +45,7 @@ crearToken = (id, secreta, expiracion) => {
             const { uuid } = req.body
             let respuesta = { ...cat.resMessage }
 
-            if (!uuid ) return res.json(respuesta)
+            if (!uuid) return res.json(respuesta)
 
             let u = await Usuarios.update({ id: uuid }).set({ ses_id: null }).meta({ schemaName: 'cot' });
             respuesta.success = true;
@@ -63,7 +57,8 @@ crearToken = (id, secreta, expiracion) => {
 
         }
         //revisar si las policies pueden llevar argumentos
-       
+
         //forgot password
+        //hacer para admin un registro de pago de usuarios
     };
 
