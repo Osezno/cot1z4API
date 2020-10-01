@@ -44,7 +44,11 @@ module.exports = {
     ses_id:{
       type: 'string',
       allowNull: true
-    }
+    },
+    tmp_password: {
+      type: 'string',
+      allowNull: true
+    },
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
 

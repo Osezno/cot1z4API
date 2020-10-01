@@ -22,6 +22,7 @@ module.exports.policies = {
   SesionesController: {
     'login': 'login',
     'forgotPassword':true,
+    'changePassword':true,
   },
   UsuariosController: {
     'nuevoUsuario': 'checkAdminSession',

@@ -9,7 +9,7 @@
 const invalid = require("../helpers/validations");
 const bcrypt = require('bcryptjs');
 const cat = require("../helpers/catalogs");
-const general = require("../helpers/general");
+//const general = require("../helpers/general");
 
 const validate = (data) => {
     const { nombre, password, email, telefono, id_rol, id_estatus } = data;

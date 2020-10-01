@@ -5,6 +5,11 @@ module.exports = {
     fn: function () {
 
     },
+    
+    logo:"goodCode.png",
+    slogan:"Lorem ipsum Dolor Amet",
+    domain:"goodCode.com",
+    mainColor:"#3498db",
     resMessage: { 
         success: false, 
         message: "Faltan datos" 
@@ -13,17 +18,22 @@ module.exports = {
         mail:"El email es incorrecto",
         mailUnavalible:"El email ya existe en nuestra base de datos",
         password:"El Password es incorrecto",
+        passwordReq:"El Password no es seguro",
         name:"Nombre incorrecto",
         //for login password?
         noUser:"El Usuario no existe en el sistema",
         session:"Sesión invalida",
         denied:"Permisos insuficientes",
-        estatus:"tu cuenta esta desabilitada"
+        estatus:"Tu cuenta esta desabilitada",
+        recovery:"Tu token expiro o es incorrecto",
+        serverError:"Estamos experimentando problemas, nuestros tecnicos estan trabajando para resolverlos."
     },
     success:{
-        login:"sesión exitosa",
-        verified:"sesión verificada",
-        logout:"sesión cerrada"
+        login:"Sesión exitosa",
+        verified:"Sesión verificada",
+        logout:"Sesión cerrada",
+        recovery:"Contraseña actualizada",
+        emailSend:"¡Correo enviado! revisa tu bandeja de entrada"
     },
     rol:{
          admin:[1],

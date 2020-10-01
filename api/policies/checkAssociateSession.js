@@ -11,6 +11,7 @@ module.exports = async function (req, res, proceed){
     let respuesta = { ...cat.resMessage }
     if(!token || !uuid)  return res.json(respuesta)
     //verify token
+    // cambiar a process.env.SECRET
     const session = await jwt.verify(token, req.secret)
     // verify user
     let user = await Usuarios.findOne({

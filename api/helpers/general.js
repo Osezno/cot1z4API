@@ -9,6 +9,7 @@ module.exports = {
 
     },
     //SESIÓNES
+    
     genId: () => {
         let x = Math.random().toString(36)
         return x
@@ -20,13 +21,30 @@ module.exports = {
 
         return user
     },
-    checkUserById: async (id) =>  {
+    checkUserById: async (id) => {
         let user = await Usuarios.findOne({
             id: id
         }).meta({ schemaName: 'cot' });
 
         return user
     },
-
-
+    recoveryUrl: (pwd, uuid) => {
+        //volver el link una variable
+        return `https://localhost:3000/recovery?tmp=${pwd}&id=${uuid}`
+    },
+    sendMail:(template, obj, email, subj) => new Promise(resolve => {
+        sails.hooks.email.send(
+            template,
+            obj,
+            {
+                to: email,
+                subject: subj
+            },
+            (err) => {
+                console.log(err)
+                if(err) resolve(false)
+                else resolve(true)
+            }
+        )
+    }) ,
 };

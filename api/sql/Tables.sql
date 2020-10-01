@@ -39,21 +39,30 @@ CREATE TABLE cot.usuarios (
     nombre                    TEXT NOT NULL,
     email                     TEXT NOT NULL,
     password                  TEXT NOT NULL,
+    tmp_password              TEXT
     fotografia                TEXT NOT NULL,
     telefono                  TEXT NOT NULL,
     onboard                   BOOLEAN NOT NULL,
     ses_id                    TEXT,
 );
 
+-- estos se hacen desde que se crea el usuario
+DROP TABLE IF EXISTS cot.subscripcion;
+CREATE TABLE cot.subscripcion(
+   id_usr          INTEGER REFERENCES cot.usuarios(id) NOT NULL,
+   ultimo_pago     TIMESTAMP NOT NULL,
+   fecha_de_exp    TIMESTAMP NOT NULL,
+   cuenta_tmp      BOOLEAN NOT NULL,
+)
+--revisar si es necesario notificiaciones con mongo o realtime
+DROP TABLE IF EXISTS cot.notificaciones;
+CREATE TABLE cot.notificaciones (
+   id_usr          INTEGER REFERENCES cot.usuarios(id) NOT NULL,
+   ultimo_pago     TIMESTAMP NOT NULL,
+   fecha_de_exp    TIMESTAMP NOT NULL,
+   cuenta_tmp      BOOLEAN NOT NULL,
+)
 
-CREATE TABLE cot.sesiones (
-  idsesion                  SERIAL PRIMARY KEY,
-  --id_estatus                INTEGER REFERENCES cot.estatus(idcat_estatus) NOT NULL,
-  idusuario                 INTEGER REFERENCES cot.usuarios(idusuario),
-  clave                     TEXT NOT NULL UNIQUE,
-  fecha_real                TIMESTAMP NOT NULL,
-  fecha_actualizacion       TIMESTAMP NOT NULL,
-);
 --sera necesario saber el tiempo que pasan en la plataforma?
 --ABC DE USUARIOS
 

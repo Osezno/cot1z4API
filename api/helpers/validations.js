@@ -8,20 +8,16 @@ module.exports = {
 
     },
     checkNull: function (x) {
-        sails.log("test", x)
         if (typeof x === 'undefined' || x === null || x === '') {
             return true;
-            // return exits.success(true);
         }
         else {
-            //return exits.success(false);
             return false
         }
     },
     checkLength: function (x, minus, max) {
 
         if (typeof x.length < minus || x.length > max) {
-            sails.log(x)
             return true;
             //return exits.success(result);
         }
@@ -32,6 +28,7 @@ module.exports = {
     },
     checkPassword: function (password) {
         let re_pass = /^[a-zA-Z0-9_\-\$\*\¡\!]+$/;
+        
         if (!re_pass.test(password) ||
             this.checkLength(password, 8, 30) ||
             this.checkNull(password)) {
@@ -40,16 +37,13 @@ module.exports = {
         else { return false }
     },
     checkNumber: function (x, minus, max) {
-        if (typeof x.length < minus || x.length > max) {
-            sails.log(x)
-            return true; 
-        }
-        else {
-            return false
-        }
+        if (typeof x.length < minus || x.length > max) return true; 
+        else return false
     },
     checkEmail: function (email) {
-        let re_email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        
+        let re_email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
         if (!re_email.test(email) ||
             this.checkLength(email, 5, 100) ||
             this.checkNull(email)
