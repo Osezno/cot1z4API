@@ -34,6 +34,7 @@ CREATE TABLE cot.usuarios (
     "createdAt"               TIMESTAMP NOT NULL,
     "updatedAt"               TIMESTAMP NOT NULL,
     id                        SERIAL PRIMARY KEY,
+-- uuid ?
     id_rol                    INTEGER REFERENCES cot.roles(id) NOT NULL,
     id_estatus                INTEGER REFERENCES cot.estatus(id) NOT NULL,
     nombre                    TEXT NOT NULL,
@@ -54,14 +55,39 @@ CREATE TABLE cot.subscripcion(
    fecha_de_exp    TIMESTAMP NOT NULL,
    cuenta_tmp      BOOLEAN NOT NULL,
 )
---revisar si es necesario notificiaciones con mongo o realtime
+
+DROP TABLE IF EXISTS cot.users_activities;
+CREATE TABLE cot.users_activities(
+   id_usr       INTEGER REFERENCES cot.usuarios(id) NOT NULL,
+   uploaded_img INTEGER NOT NULL,
+-- json img ids?
+   uploaded_vid INTEGER NOT NULL,
+--json video ids?
+   uploaded_files INTEGER NOT NULL,
+--  
+   users_added    INTEGER NOT NULL,
+--json users ids?
+)
+
+DROP TABLE IF EXISTS cot.users_permissions;
+CREATE TABLE cot.users_permissions(
+   id_usr       INTEGER REFERENCES cot.usuarios(id) NOT NULL,
+   modify_permissions boolean NOT NULL,
+   recieve_mails_as_notifications boolean NOT NULL,
+  -- upload_files boolean NOT NULL,
+  -- edit_unit boolean NOT NULL,
+)
+--revisar si es necesario notificiaciones con mongo o realtime o mejor con firebase
+--crear tabla al crear un usuario
+--pull on  refresh but hear changes of only  one row in the table,
 DROP TABLE IF EXISTS cot.notificaciones;
 CREATE TABLE cot.notificaciones (
-   id_usr          INTEGER REFERENCES cot.usuarios(id) NOT NULL,
-   ultimo_pago     TIMESTAMP NOT NULL,
-   fecha_de_exp    TIMESTAMP NOT NULL,
-   cuenta_tmp      BOOLEAN NOT NULL,
+   id_usr             INTEGER REFERENCES cot.usuarios(id) NOT NULL,
+   notification_count INTEGER NOT NULL,
+   not_seen           JSON ,
+   already_seen       JSON 
 )
+
 
 --sera necesario saber el tiempo que pasan en la plataforma?
 --ABC DE USUARIOS
@@ -101,7 +127,7 @@ CREATE TABLE cot.empresas (
     idbien                    INTEGER REFERENCES cot.bien(idbien),
 );
 
-CREATE TABLE cot.clienres (
+CREATE TABLE cot.clientes (
     "createdAt"               bigint NOT NULL,
     "updatedAt"               bigint NOT NULL,
     id                        SERIAL PRIMARY KEY,

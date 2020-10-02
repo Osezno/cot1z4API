@@ -8,7 +8,7 @@ module.exports = {
     
     logo:"goodCode.png",
     slogan:"Lorem ipsum Dolor Amet",
-    domain:"goodCode.com",
+    domain:"https://localhost:3000/",
     mainColor:"#3498db",
     resMessage: { 
         success: false, 
@@ -29,11 +29,12 @@ module.exports = {
         serverError:"Estamos experimentando problemas, nuestros tecnicos estan trabajando para resolverlos."
     },
     success:{
-        login:"Sesión exitosa",
-        verified:"Sesión verificada",
-        logout:"Sesión cerrada",
-        recovery:"Contraseña actualizada",
-        emailSend:"¡Correo enviado! revisa tu bandeja de entrada"
+        userUpdated:"¡Usuario actualizado exitosamente!",
+        login:"Sesión exitosa...",
+        verified:"Sesión verificada...",
+        logout:"Sesión cerrada.",
+        recovery:"Contraseña actualizada.",
+        emailSend:"¡Correo enviado! revisa tu bandeja de entrada."
     },
     rol:{
          admin:[1],

@@ -15,7 +15,7 @@ module.exports = {
             return false
         }
     },
-    checkLength: function (x, minus, max) {
+    checkLength:function (x, minus, max) {
 
         if (typeof x.length < minus || x.length > max) {
             return true;
@@ -36,11 +36,11 @@ module.exports = {
         }
         else { return false }
     },
-    checkNumber: function (x, minus, max) {
+    checkNumber: function (x, minus, max){
         if (typeof x.length < minus || x.length > max) return true; 
         else return false
     },
-    checkEmail: function (email) {
+    checkEmail:function (email) {
         
         let re_email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         
@@ -51,5 +51,11 @@ module.exports = {
             return true;
         }
         else { return false }
+    },
+    checkImage:function(image){
+       //check null
+       //check size
+       //resize
+       //return
     }
 };

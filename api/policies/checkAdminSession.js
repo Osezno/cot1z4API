@@ -19,7 +19,7 @@ module.exports = async function (req, res, proceed){
         id: uuid
     }).meta({ schemaName: 'cot' });
 
-    console.log(user)
+   
     //validate
     if( user && user.id_estatus === 2 && user.ses_id === session.id && rol.includes(user.id_rol)) return proceed();
     // find error

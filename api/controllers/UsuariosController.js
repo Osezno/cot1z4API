@@ -9,7 +9,7 @@
 const invalid = require("../helpers/validations");
 const bcrypt = require('bcryptjs');
 const cat = require("../helpers/catalogs");
-//const general = require("../helpers/general");
+const general = require("../helpers/general");
 
 const validate = (data) => {
     const { nombre, password, email, telefono, id_rol, id_estatus } = data;
@@ -117,9 +117,8 @@ module.exports = {
         }
 
         const { uuid } = req.body;
-        if (!uuid) {
-            return res.json(respuesta)
-        }
+        if (!uuid) return res.json(respuesta)
+        
 
         let userExists = await Usuarios.findOne({
             id: uuid
@@ -127,7 +126,7 @@ module.exports = {
 
         if (!userExists) {
             respuesta.message = cat.errors.noUser;
-            sails.log(respuesta.message);
+        
             return res.json(respuesta);
         } else {
             const { nombre, fotografia, password, email, telefono, id_rol, id_estatus } = req.body;
@@ -191,5 +190,6 @@ module.exports = {
         respuesta["data"] = usuarios;
         return res.json(respuesta)
     },
+    
 };
 
