@@ -10,11 +10,11 @@ const invalid = require("../helpers/validations");
 const bcrypt = require('bcryptjs');
 const cat = require("../helpers/catalogs");
 const general = require("../helpers/general");
-
+const uuid =  require('uuid');
 const validate = (data) => {
     const { nombre, password, email, telefono, id_rol, id_estatus } = data;
     if (!id_rol || !id_estatus || !nombre || !email || !password || !telefono) {
-        return { error: true, message: resMessage.message }
+        return { error: true, message: cat.errors.default }
     }
 
     if (invalid.checkNull(nombre) ||
@@ -59,6 +59,7 @@ module.exports = {
                 // Store hash in your password DB.
                 let usuario = await Usuarios.create(
                     Object.assign({
+                        uuid: uuid.v4(),
                         id_rol: id_rol,
                         id_estatus: id_estatus,
                         nombre: nombre,
@@ -88,17 +89,15 @@ module.exports = {
         if (!uuid) {
             return { error: true, message: respuestas }
         }
-
-        let userExists = await Usuarios.findOne({
-            id: uuid
-        }).meta({ schemaName: 'cot' });
+        
+        let userExists = await general.checkUserById(uuid)
 
         if (!userExists) {
             respuesta.message = cat.errors.noUser;
             return res.json(respuesta);
         } else {
             let usuarioEliminado = await Usuarios.destroyOne({
-                id: uuid
+                uuid: uuid
             }).meta({ schemaName: 'cot' });
 
             respuesta.success = true;
@@ -120,9 +119,7 @@ module.exports = {
         if (!uuid) return res.json(respuesta)
         
 
-        let userExists = await Usuarios.findOne({
-            id: uuid
-        }).meta({ schemaName: 'cot' });
+        let userExists = await general.checkUserById(uuid)
 
         if (!userExists) {
             respuesta.message = cat.errors.noUser;
@@ -133,7 +130,7 @@ module.exports = {
 
             ////hacer un hash de la password
             bcrypt.hash(password, 10, async (err, hash) => {
-                let usuario = await Usuarios.updateOne({ id: uuid })
+                let usuario = await Usuarios.updateOne({ uuid: uuid })
                     .set({
                         id_rol: id_rol,
                         id_estatus: id_estatus,
@@ -158,10 +155,9 @@ module.exports = {
         if (!uuid) {
             return res.json(respuesta)
         }
-
-        let userExists = await Usuarios.findOne({
-            id: uuid
-        }).meta({ schemaName: 'cot' });
+        
+        let userExists = await general.checkUserById(uuid)
+        
 
         if (!userExists) {
             respuesta.message = cat.errors.noUser;

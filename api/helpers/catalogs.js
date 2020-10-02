@@ -15,6 +15,7 @@ module.exports = {
         message: "Faltan datos" 
     },
     errors:{
+        default:"Faltan datos",
         mail:"El email es incorrecto",
         mailUnavalible:"El email ya existe en nuestra base de datos",
         password:"El Password es incorrecto",

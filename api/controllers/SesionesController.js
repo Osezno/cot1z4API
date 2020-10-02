@@ -36,7 +36,7 @@ crearToken = (id, secreta, expiracion) => {
                 onboard: u.onboard,
                 id_rol: u.id_rol,
                 id_estatus: u.id_estatus,
-                uuid: u.id
+                uuid: u.uuid
             };
 
             return res.json(respuesta);
@@ -50,7 +50,7 @@ crearToken = (id, secreta, expiracion) => {
 
             if (!uuid) return res.json(respuesta)
 
-            let u = await Usuarios.update({ id: uuid }).set({ ses_id: null }).meta({ schemaName: 'cot' });
+            await Usuarios.update({ uuid: uuid }).set({ ses_id: null }).meta({ schemaName: 'cot' });
             respuesta.success = true;
             respuesta.message = cat.success.logout;
             return res.json(respuesta);
@@ -80,7 +80,7 @@ crearToken = (id, secreta, expiracion) => {
             await Usuarios.update({ email: email }).set({ tmp_password: tmp_id }).meta({ schemaName: 'cot' });
            
             
-            url = general.recoveryUrl(token, user.id)
+            url = general.recoveryUrl(token, user.uuid)
 
             let mailObj={
                 maincolor:cat.mainColor,
@@ -129,7 +129,7 @@ crearToken = (id, secreta, expiracion) => {
 
             bcrypt.hash(password, 10, async (err, hash) => {
                 // Store hash in your password DB.
-                let usuario = await Usuarios.update({ id: uuid }).set({ password: hash}).meta({ schemaName: 'cot' });
+                let usuario = await Usuarios.update({ uuid: uuid }).set({ password: hash}).meta({ schemaName: 'cot' });
                 respuesta.success = true;
                 respuesta.message = cat.success.recovery;              
                 return res.json(respuesta)

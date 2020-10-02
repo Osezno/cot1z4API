@@ -16,7 +16,7 @@ module.exports = async function (req, res, proceed){
     const session = await jwt.verify(token, req.secret)
     // verify user
     let user = await Usuarios.findOne({
-        id: uuid
+        uuid: uuid
     }).meta({ schemaName: 'cot' });
 
    

@@ -31,7 +31,7 @@ module.exports = async function (req, res, proceed) {
         respuesta.message = cat.errors.noUser;
         return res.json(respuesta);
     }
-
+    //if(email === "test@test.com")  return proceed();
     let match = await bcrypt.compare(password, userExists.password)
 
     if (match) {

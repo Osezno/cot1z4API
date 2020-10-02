@@ -25,7 +25,7 @@ module.exports = {
     },
     checkUserById: async (id) => {
         let user = await Usuarios.findOne({
-            id: id
+            uuid: id
         }).meta({ schemaName: 'cot' });
 
         return user
@@ -63,12 +63,9 @@ module.exports = {
             });
         });
     }),
-    addNotification: (user_id) => {
+    addNotification: (user_id, notification) => {
         let notificaciones = realDB.ref(`/${user_id}/`)
-        notificaciones.update({
-            "test": "cerdo",
-            "test2": "clientUsers",
-        });
+        notificaciones.update({test:"test"});
 
         // get notificacions
         // updated_them

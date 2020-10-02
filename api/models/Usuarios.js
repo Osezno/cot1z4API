@@ -8,7 +8,7 @@
 module.exports = {
 
   attributes: {
-
+    uuid:{type: 'string',required:true},
     id_rol: {
       type: 'number',
       required: true

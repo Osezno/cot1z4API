@@ -9,8 +9,29 @@ INSERT INTO cot.roles ("createdAt", "updatedAt", codigo, descripcion) VALUES (no
 INSERT INTO cot.roles ("createdAt", "updatedAt", codigo, descripcion) VALUES (now(), now(),'Empleado','Usuario con privilegios menores en una unidad');
 
 
-INSERT INTO cot.usuarios (idcat_estatus, idcat_rol, clave, email, alias, password, fecha_real, fecha_actualizacion) VALUES (1, 2, md5(extract(epoch from clock_timestamp())::TEXT), 'soporte@soevii.com', 'soporte', md5('root'), now(), now());
-
+INSERT INTO cot.usuarios (uuid, idcat_estatus, idcat_rol, nombre, email, alias,tmp_password, password, fecha_real, fecha_actualizacion) VALUES (md5('admin'),1, 2, md5(extract(epoch from clock_timestamp())::TEXT), 'soporte@soevii.com', 'soporte', md5('root'), now(), now());
+INSERT INTO cot.usuarios (
+    uuid,
+id_rol,
+id_estatus,
+nombre,
+email,
+password,
+tmp_password,
+fotografia,
+telefono,
+onboard,
+ses_id ,"createdAt","updatedAt")VALUES (
+    md5('admin'),
+    1,
+    2,
+    'soporte',
+    'test@test.com',
+    '1ab2c3d4e5',
+    '','',
+    '123421434',
+     false,
+     '',now(),now() );
 
 update cot.usuarios SET onboard = False  WHERE id = 1;
 

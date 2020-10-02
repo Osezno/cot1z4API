@@ -17,7 +17,7 @@ module.exports = async function (req, res, proceed){
     const session = await jwt.verify(token, req.secret)
     // verify user
     let user = await Usuarios.findOne({
-        id: uuid
+        uuid: uuid
     }).meta({ schemaName: 'cot' });
     //validate
     if( user &&  user.id_estatus === 2 && user.ses_id === session.id && rol.includes(user.id_rol)) return proceed();

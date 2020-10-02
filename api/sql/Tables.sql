@@ -34,23 +34,24 @@ CREATE TABLE cot.usuarios (
     "createdAt"               TIMESTAMP NOT NULL,
     "updatedAt"               TIMESTAMP NOT NULL,
     id                        SERIAL PRIMARY KEY,
--- uuid ?
+    uuid                      TEXT NOT NULL,
     id_rol                    INTEGER REFERENCES cot.roles(id) NOT NULL,
     id_estatus                INTEGER REFERENCES cot.estatus(id) NOT NULL,
     nombre                    TEXT NOT NULL,
     email                     TEXT NOT NULL,
     password                  TEXT NOT NULL,
-    tmp_password              TEXT
+    tmp_password              TEXT,
     fotografia                TEXT NOT NULL,
     telefono                  TEXT NOT NULL,
     onboard                   BOOLEAN NOT NULL,
-    ses_id                    TEXT,
+    ses_id                    TEXT
 );
+
 
 -- estos se hacen desde que se crea el usuario
 DROP TABLE IF EXISTS cot.subscripcion;
 CREATE TABLE cot.subscripcion(
-   id_usr          INTEGER REFERENCES cot.usuarios(id) NOT NULL,
+   id_usr          INTEGER REFERENCES cot.usuarios(uuid) NOT NULL,
    ultimo_pago     TIMESTAMP NOT NULL,
    fecha_de_exp    TIMESTAMP NOT NULL,
    cuenta_tmp      BOOLEAN NOT NULL,
@@ -58,7 +59,7 @@ CREATE TABLE cot.subscripcion(
 
 DROP TABLE IF EXISTS cot.users_activities;
 CREATE TABLE cot.users_activities(
-   id_usr       INTEGER REFERENCES cot.usuarios(id) NOT NULL,
+   id_usr       INTEGER REFERENCES cot.usuarios(uuid) NOT NULL,
    uploaded_img INTEGER NOT NULL,
 -- json img ids?
    uploaded_vid INTEGER NOT NULL,
@@ -71,7 +72,7 @@ CREATE TABLE cot.users_activities(
 
 DROP TABLE IF EXISTS cot.users_permissions;
 CREATE TABLE cot.users_permissions(
-   id_usr       INTEGER REFERENCES cot.usuarios(id) NOT NULL,
+   id_usr       INTEGER REFERENCES cot.usuarios(uuid) NOT NULL,
    modify_permissions boolean NOT NULL,
    recieve_mails_as_notifications boolean NOT NULL,
   -- upload_files boolean NOT NULL,
@@ -82,7 +83,7 @@ CREATE TABLE cot.users_permissions(
 --pull on  refresh but hear changes of only  one row in the table,
 DROP TABLE IF EXISTS cot.notificaciones;
 CREATE TABLE cot.notificaciones (
-   id_usr             INTEGER REFERENCES cot.usuarios(id) NOT NULL,
+   id_usr             INTEGER REFERENCES cot.usuarios(uuid) NOT NULL,
    notification_count INTEGER NOT NULL,
    not_seen           JSON ,
    already_seen       JSON 
@@ -99,7 +100,8 @@ CREATE TABLE cot.servicios (
     "createdAt"               bigint NOT NULL,
     "updatedAt"               bigint NOT NULL,
     id                        SERIAL PRIMARY KEY,
-    idusuario                 INTEGER REFERENCES cot.usuarios(idusuario),
+    uuid
+    idusuario                 INTEGER REFERENCES cot.usuarios(uuid),
     idstars                   INTEGER REFERENCES cot.stars(idstars),
     idbien                    INTEGER REFERENCES cot.bien(idbien),
 );
@@ -109,7 +111,8 @@ CREATE TABLE cot.productos (
     "createdAt"               bigint NOT NULL,
     "updatedAt"               bigint NOT NULL,
     id                        SERIAL PRIMARY KEY,
-    idusuario                 INTEGER REFERENCES cot.usuarios(idusuario),
+    uuid
+    idusuario                 INTEGER REFERENCES cot.usuarios(uuid),
     servicio                  BOOLEAN NOT NULL,
     producto                  BOOLEAN NOT NULL,
     descripcion               TEXT NOT NULL,
