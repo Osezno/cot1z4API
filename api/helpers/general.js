@@ -64,8 +64,36 @@ module.exports = {
         });
     }),
     addNotification: (user_id, notification) => {
+
         let notificaciones = realDB.ref(`/${user_id}/`)
-        notificaciones.update({test:"test"});
+
+        //revisar si ya existen notificaciones
+        //que solo haya maximo 3 vistas
+        
+        notificaciones.once("value", function (snapshot) {
+            
+            let data = snapshot.val()
+            
+            if (data && data.notificaciones) {
+                new_val = [...data.notificaciones, { mensaje: "test", url: '', creado: Date.now(), visto: false }]
+
+                
+                console.log("test",new_val)
+                notificaciones.set({notificaciones:new_val});
+            } else {
+                notificaciones.update({
+                    notificaciones: [
+                        { mensaje: "test", url: '', creado: Date.now(), visto: false },
+                        { mensaje: "test", url: '', creado: Date.now(), visto: false },
+                        { mensaje: "test", url: '', creado: Date.now(), visto: false }]
+                });
+            }
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+
+
+
 
         // get notificacions
         // updated_them
