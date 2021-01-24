@@ -1,6 +1,8 @@
 // const fire =  require('firebase/app');
 // require('firebase/storage');
 // require('firebase/database');
+//const admin = require('firebase-admin');
+//const serviceAccount = require('./serviceAccountKey.json');
 
 // process.env.MAILGUN_USERNAME = "xxxxxxxx";
 // process.env.MAILGUN_PWD= "xxxxxxxx";
@@ -21,6 +23,7 @@
 // }
 // // create a firebase projec
 // let fire_config = {
+ //   credential:  admin.credential.cert(serviceAccount),
 //     apiKey: "xxxxxxxxxxxx",
 //     authDomain: "xxxxxxxxxxxx",
 //     databaseURL: "xxxxxxxxxxxxo.com",
@@ -36,6 +39,6 @@
 //TODO: Add SDKs for Firebase products that you want to use
 //     https://firebase.google.com/docs/web/setup#available-libraries -->
 
- // firebase.initializeApp(firebaseConfig);
+ // admin.initializeApp(firebaseConfig);
 
   

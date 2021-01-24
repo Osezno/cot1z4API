@@ -10,7 +10,8 @@ const invalid = require("../helpers/validations");
 const bcrypt = require('bcryptjs');
 const cat = require("../helpers/catalogs");
 const general = require("../helpers/general");
-const uuid =  require('uuid');
+const uuid = require('uuid');
+
 const validate = (data) => {
     const { nombre, password, email, telefono, id_rol, id_estatus } = data;
     if (!id_rol || !id_estatus || !nombre || !email || !password || !telefono) {
@@ -19,7 +20,7 @@ const validate = (data) => {
 
     if (invalid.checkNull(nombre) ||
         invalid.checkLength(nombre, 2, 50)) {
-        return { error: true, message: cat.errors.name}
+        return { error: true, message: cat.errors.name }
     }
 
     if (invalid.checkPassword(password)) {
@@ -27,7 +28,7 @@ const validate = (data) => {
     }
 
     if (invalid.checkEmail(email)) {
-        return { error: true, message:  cat.errors.email }
+        return { error: true, message: cat.errors.email }
     }
 
     return { error: false }
@@ -38,7 +39,7 @@ module.exports = {
     nuevoUsuario: async (req, res) => {
         let respuesta = { ...cat.resMessage }
         let v = await validate(req.body)
-        
+
         if (v.error) {
             respuesta.message = v.message;
             return res.json(respuesta)
@@ -89,7 +90,7 @@ module.exports = {
         if (!uuid) {
             return { error: true, message: respuestas }
         }
-        
+
         let userExists = await general.checkUserById(uuid)
 
         if (!userExists) {
@@ -109,7 +110,7 @@ module.exports = {
     editarUsuario: async (req, res) => {
         let respuesta = { ...cat.resMessage }
         let v = await validate(req.body)
-       
+
         if (v.error) {
             respuesta.message = v.message;
             return res.json(respuesta)
@@ -117,13 +118,13 @@ module.exports = {
 
         const { uuid } = req.body;
         if (!uuid) return res.json(respuesta)
-        
+
 
         let userExists = await general.checkUserById(uuid)
 
         if (!userExists) {
             respuesta.message = cat.errors.noUser;
-        
+
             return res.json(respuesta);
         } else {
             const { nombre, fotografia, password, email, telefono, id_rol, id_estatus } = req.body;
@@ -155,14 +156,15 @@ module.exports = {
         if (!uuid) {
             return res.json(respuesta)
         }
-        
+
         let userExists = await general.checkUserById(uuid)
-        
+
 
         if (!userExists) {
             respuesta.message = cat.errors.noUser;
             return res.json(respuesta)
-        } else {
+        } else {  
+            
             respuesta.success = true;
             respuesta.message = "Usuario obtenido exitosamente!";
             respuesta["data"] = userExists;
@@ -186,6 +188,6 @@ module.exports = {
         respuesta["data"] = usuarios;
         return res.json(respuesta)
     },
-    
+
 };
 

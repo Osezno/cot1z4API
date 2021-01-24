@@ -1,9 +1,13 @@
 
 const cat = require("./catalogs");
 const firebase = sails.config.firebase
-const storage = firebase.storage();
+const storage = firebase.storage().bucket();
 const realDB = firebase.database();
-const bcrypt = require('bcryptjs');
+
+
+//const bcrypt = require('bcryptjs');
+const fs = require('fs');
+//const fetch = require('node-fetch');
 
 module.exports = {
 
@@ -32,7 +36,7 @@ module.exports = {
     },
     recoveryUrl: (pwd, uuid) => {
         //volver el link una variable
-        return `${cat.domain}recovery?tmp=${pwd}&id=${uuid}`
+        return `${cat.domain}recovery/${pwd}/${uuid}`
     },
     sendMail: (template, obj, email, subj) => new Promise(resolve => {
         sails.hooks.email.send(
@@ -49,19 +53,49 @@ module.exports = {
             }
         )
     }),
-    FileUpload: (blob, imageId, user_id) => new Promise(res => {
-        // ¿llevar un registro de archivos por usuario?
+    FileUpload: (base64, imageId, user_id) => new Promise((res, rej) => {
+        // check if base64 can be used
         if (!imageId) imageId = Math.random().toString(36)
-        upload = storage.ref(`assets/img/${imageId}`).put(blob)
-        upload.on('state_changed', snapshot => {
-            console.log("entra")
-        }, error => {
-            console.log('error', error);
-        }, () => {
-            upload.snapshot.ref.getDownloadURL().then(url => {
-                res(url);
-            });
+
+        let buff = Buffer(base64.replace('data:image/png;base64,', ''), 'base64');
+        fs.writeFileSync(`.tmp/public/${imageId}.png`, buff, (err) => {
+            if (err) { console.log(err) }
         });
+        
+        storage.upload(`.tmp/public/${imageId}.png`,
+            {
+                destination: `${imageId}.png`,
+                public: true,
+            }).then(data => {
+                // console.log('metadata=',data[0]['metadata'], data[0]['metadata']['mediaLink']);
+                // console.log('metadata=', meta[0].mediaLink, data);
+                res(data[0]['metadata']['mediaLink']);
+            }).catch(err => {
+                res(false);
+                console.log('error uploading to storage', err);
+            });
+        // fs.readFile(`.tmp/public/${imageId}.png`, (err, buffer) =>{
+        //     console.log(buffer); 
+        //     let arraybuffer = Uint8Array.from(buffer).buffer;
+        //     console.log(arraybuffer)
+        //     if (err) {
+        //         rej(false);
+        // }
+
+        // upload = storage.ref(`assets/img/${imageId}`).put(arraybuffer)
+        // upload.on('state_changed', snapshot => {
+
+        // }, error => {
+        //     console.log('error', error);
+        //     rej(false);
+        // }, () => {
+        //     upload.snapshot.ref.getDownloadURL().then(url => {
+        //         res(url);
+        //     });
+        // });
+        // ¿llevar un registro de archivos por usuario?
+
+
     }),
     addNotification: (user_id, notification) => {
 
@@ -69,17 +103,15 @@ module.exports = {
 
         //revisar si ya existen notificaciones
         //que solo haya maximo 3 vistas
-        
+
         notificaciones.once("value", function (snapshot) {
-            
+
             let data = snapshot.val()
-            
+
             if (data && data.notificaciones) {
                 new_val = [...data.notificaciones, { mensaje: "test", url: '', creado: Date.now(), visto: false }]
 
-                
-                console.log("test",new_val)
-                notificaciones.set({notificaciones:new_val});
+                notificaciones.set({ notificaciones: new_val });
             } else {
                 notificaciones.update({
                     notificaciones: [

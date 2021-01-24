@@ -17,7 +17,7 @@ module.exports = {
     },
     checkLength:function (x, minus, max) {
 
-        if (typeof x.length < minus || x.length > max) {
+        if ( x.length < minus || x.length > max) {
             return true;
             //return exits.success(result);
         }
@@ -27,7 +27,7 @@ module.exports = {
         }
     },
     checkPassword: function (password) {
-        let re_pass = /^[a-zA-Z0-9_\-\$\*\¡\!]+$/;
+        let re_pass = new RegExp(/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&amp;*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/);
         
         if (!re_pass.test(password) ||
             this.checkLength(password, 8, 30) ||
@@ -37,7 +37,7 @@ module.exports = {
         else { return false }
     },
     checkNumber: function (x, minus, max){
-        if (typeof x.length < minus || x.length > max) return true; 
+        if ( x.length < minus || x.length > max) return true; 
         else return false
     },
     checkEmail:function (email) {

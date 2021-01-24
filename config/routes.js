@@ -54,8 +54,10 @@ module.exports.routes = {
   'post /api/v1/forgot-password'       : 'SesionesController.forgotPassword',
   'post /api/v1/change-password'       : 'SesionesController.changePassword',
   //FUNCIONES DE USUARIO
-  'post /api/v1/actualizar-mi-foto'           : 'UsuarioController.updateProfilePic',
-  'post /api/v1/add-notification'           : 'UsuarioController.notificationTest',
+  'post /api/v1/ver-perfil'           : 'UsuarioController.verPerfil',
+  'post /api/v1/editar-perfil'        : 'UsuarioController.editarPerfil',
+  'post /api/v1/actualizar-mi-foto'   : 'UsuarioController.updateProfilePic',
+  'post /api/v1/add-notification'     : 'UsuarioController.notificationTest',
   //test first conection
   'POST  /api/v1/create-input': { action: 'create-input' },
   'GET   /api/v1/read-inputs': { action: 'read-inputs' }

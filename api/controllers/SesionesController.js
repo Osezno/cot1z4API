@@ -58,6 +58,7 @@ crearToken = (id, secreta, expiracion) => {
         },
         forgotPassword: async (req, res) => {
             const { email } = req.body
+            
             let respuesta = { ...cat.resMessage }
             if (!email) return res.json(respuesta)
 
@@ -119,8 +120,15 @@ crearToken = (id, secreta, expiracion) => {
                 respuesta.message = cat.errors.noUser
                 return res.json(respuesta)
             }
-
-            let session = await jwt.verify(token, req.secret)
+            let session;
+            try{
+                session = await jwt.verify(token, req.secret)
+            }
+            catch{
+                respuesta.message = cat.errors.recovery
+                return  res.json(respuesta)
+            }
+            
             
             if(u.tmp_password != session.id){
                 respuesta.message = cat.errors.recovery

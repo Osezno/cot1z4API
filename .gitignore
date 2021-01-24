@@ -46,6 +46,7 @@
 ################################################
 
 config/local.js
+config/serviceAccountKey.json
 config/session.js
 config/custom.js
 docker-compose.yml

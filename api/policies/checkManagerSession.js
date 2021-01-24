@@ -5,8 +5,10 @@ const cat = require("../helpers/catalogs");
 
 module.exports = async function (req, res, proceed){
     
-    const { token, uuid } = req.headers
-
+    const { authorization } = req.headers
+    const { uuid }= req.body
+    
+    let token = authorization.split(" ")[1]
     let rol = cat.rol.manager
 
     let respuesta = { ...cat.resMessage }
@@ -14,7 +16,14 @@ module.exports = async function (req, res, proceed){
     if(!token || !uuid)  return res.json(respuesta)
     //verify token
     // cambiar a process.env.SECRET
-    const session = await jwt.verify(token, req.secret)
+    let session;
+    try{
+        session = await jwt.verify(token, req.secret)
+    }
+    catch{
+        respuesta.message = cat.errors.recovery
+        return  res.json(respuesta)
+    }
     // verify user
     let user = await Usuarios.findOne({
         uuid: uuid

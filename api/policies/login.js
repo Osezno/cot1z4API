@@ -9,8 +9,6 @@ module.exports = async function (req, res, proceed) {
 
     const { email, password } = req.body
 
-    let rol = cat.rol.empleado
-
     let respuesta = { ...cat.resMessage }
     //verify data
     if (!email || !password) {
