@@ -6,10 +6,10 @@ module.exports = async function (req, res, proceed){
     
     const { authorization } = req.headers
     const { uuid }= req.body
-
+    
     let rol = cat.rol.admin
     let token = authorization.split(" ")[1]
-    
+    console.log(uuid, token)
     let respuesta = { ...cat.resMessage }
 
     if(!token || !uuid)  return res.json(respuesta)

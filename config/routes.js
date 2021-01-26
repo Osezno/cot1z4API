@@ -46,8 +46,9 @@ module.exports.routes = {
   'post /api/v1/nuevo-usuario'         : 'UsuariosController.nuevoUsuario',
   'post /api/v1/eliminar-usuario'      : 'UsuariosController.eliminarUsuario',
   'post /api/v1/editar-usuario'        : 'UsuariosController.editarUsuario',
+  'post /api/v1/editar-usuario-fotografia' : 'UsuariosController.editarUsuarioFotografia',
   'get /api/v1/ver-usuario'            : 'UsuariosController.verUsuario',
-  'get /api/v1/ver-usuarios'           : 'UsuariosController.verUsuarios',
+  'post /api/v1/ver-usuarios'           : 'UsuariosController.verUsuarios',
    //MANEJAR SESIONES
   'post /api/v1/login'                 : 'SesionesController.login',
   'post /api/v1/logout'                : 'SesionesController.logout',

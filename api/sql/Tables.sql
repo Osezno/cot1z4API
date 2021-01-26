@@ -44,7 +44,7 @@ CREATE TABLE cot.usuarios (
     fotografia                TEXT NOT NULL,
     telefono                  TEXT NOT NULL,
     onboard                   BOOLEAN NOT NULL,
-    ses_id                    TEXT
+    ses_id                    TEXT,
 );
 
 

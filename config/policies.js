@@ -26,8 +26,10 @@ module.exports.policies = {
   },
   UsuariosController: {
     'nuevoUsuario': 'checkAdminSession',
-    'eliminarUsuario': 'checkAdminSession',
-    'verUsuarios': 'checkAdminSession',
+    'editarUsuario': 'checkManagerSession',
+    'editarUsuarioFotografia': 'checkManagerSession',
+    'eliminarUsuario': 'checkManagerSession',
+    'verUsuarios': 'checkManagerSession',
   },
   UsuarioController: {
     'updateProfilePic': 'checkAssociateSession',

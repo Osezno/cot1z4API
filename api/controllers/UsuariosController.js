@@ -14,7 +14,8 @@ const uuid = require('uuid');
 
 const validate = (data) => {
     const { nombre, password, email, telefono, id_rol, id_estatus } = data;
-    if (!id_rol || !id_estatus || !nombre || !email || !password || !telefono) {
+    // if (!id_rol || !id_estatus || !nombre || !email || !password || !telefono) {
+    if (!id_rol || !id_estatus || !nombre || !email || !telefono) {
         return { error: true, message: cat.errors.default }
     }
 
@@ -23,9 +24,9 @@ const validate = (data) => {
         return { error: true, message: cat.errors.name }
     }
 
-    if (invalid.checkPassword(password)) {
-        return { error: true, message: cat.errors.password }
-    }
+    // if (invalid.checkPassword(password)) {
+    //     return { error: true, message: cat.errors.password }
+    // }
 
     if (invalid.checkEmail(email)) {
         return { error: true, message: cat.errors.email }
@@ -107,7 +108,7 @@ module.exports = {
             return res.json(respuesta)
         }
     },
-    editarUsuario: async (req, res) => {
+    editarUsuarioFotografia: async (req, res) => {
         let respuesta = { ...cat.resMessage }
         let v = await validate(req.body)
 
@@ -116,11 +117,11 @@ module.exports = {
             return res.json(respuesta)
         }
 
-        const { uuid } = req.body;
-        if (!uuid) return res.json(respuesta)
+        const { userUuid } = req.body;
+        if (!userUuid) return res.json(respuesta)
 
 
-        let userExists = await general.checkUserById(uuid)
+        let userExists = await general.checkUserById(userUuid)
 
         if (!userExists) {
             respuesta.message = cat.errors.noUser;
@@ -129,24 +130,77 @@ module.exports = {
         } else {
             const { nombre, fotografia, password, email, telefono, id_rol, id_estatus } = req.body;
 
+            general.FileUpload(fotografia, "profile" + userUuid).then(async (url) => {
+                if (url) {
+                    let u = await Usuarios.updateOne({ uuid: userUuid })
+                        .set({ fotografia: url, email: email, nombre: nombre, telefono: telefono })
+                        .meta({ schemaName: 'cot' });
+                    respuesta.success = true
+                    respuesta.message = cat.success.userUpdated
+                    return res.json(respuesta)
+                } else {
+                    respuesta.message = cat.errors.serverError
+                    return res.json(respuesta)
+                }
+            }).catch(err => console.log(err))
             ////hacer un hash de la password
-            bcrypt.hash(password, 10, async (err, hash) => {
-                let usuario = await Usuarios.updateOne({ uuid: uuid })
-                    .set({
-                        id_rol: id_rol,
-                        id_estatus: id_estatus,
-                        nombre: nombre,
-                        email: email,
-                        password: hash,
-                        fotografia: fotografia,
-                        telefono: telefono,
-                    }).meta({ schemaName: 'cot' });
+            // bcrypt.hash(password, 10, async (err, hash) => {
+            //     let usuario = await Usuarios.updateOne({ uuid: uuid })
+            //         .set({
+            //             id_rol: id_rol,
+            //             id_estatus: id_estatus,
+            //             nombre: nombre,
+            //             email: email,
+            //             // password: hash,
+            //             fotografia: fotografia,
+            //             telefono: telefono,
+            //         }).meta({ schemaName: 'cot' });
 
-                respuesta.success = true;
-                respuesta.message = "Usuario editado exitosamente!";
-                respuesta["data"] = usuario;
-                return res.json(respuesta)
-            });
+            //     respuesta.success = true;
+            //     respuesta.message = "Usuario editado exitosamente!";
+            //     respuesta["data"] = usuario;
+            //     return res.json(respuesta)
+            // });
+        }
+    },
+    editarUsuario: async (req, res) => {
+        let respuesta = { ...cat.resMessage }
+        let v = await validate(req.body)
+        console.log(req.body)
+        if (v.error) {
+            respuesta.message = v.message;
+            return res.json(respuesta)
+        }
+
+        const { userUuid } = req.body;
+        if (!userUuid) return res.json(respuesta)
+
+
+        let userExists = await general.checkUserById(userUuid)
+
+        if (!userExists) {
+            respuesta.message = cat.errors.noUser;
+            return res.json(respuesta);
+        } else {
+            const { nombre, fotografia, password, email, telefono, id_rol, id_estatus } = req.body;
+
+            ////hacer un hash de la password
+            //    bcrypt.hash(password, 10, async (err, hash) => {
+            let usuario = await Usuarios.updateOne({ uuid: userUuid })
+                .set({
+                    id_rol: id_rol,
+                    id_estatus: id_estatus,
+                    nombre: nombre,
+                    email: email,
+                    //  password: hash,
+                    telefono: telefono,
+                }).meta({ schemaName: 'cot' });
+
+            respuesta.success = true;
+            respuesta.message = "Usuario editado exitosamente!";
+            respuesta["data"] = usuario;
+            return res.json(respuesta)
+            //   });
         }
     },
     verUsuario: async (req, res) => {
@@ -163,8 +217,8 @@ module.exports = {
         if (!userExists) {
             respuesta.message = cat.errors.noUser;
             return res.json(respuesta)
-        } else {  
-            
+        } else {
+
             respuesta.success = true;
             respuesta.message = "Usuario obtenido exitosamente!";
             respuesta["data"] = userExists;
