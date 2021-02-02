@@ -82,17 +82,7 @@ module.exports = {
         //         rej(false);
         // }
 
-        // upload = storage.ref(`assets/img/${imageId}`).put(arraybuffer)
-        // upload.on('state_changed', snapshot => {
-
-        // }, error => {
-        //     console.log('error', error);
-        //     rej(false);
-        // }, () => {
-        //     upload.snapshot.ref.getDownloadURL().then(url => {
-        //         res(url);
-        //     });
-        // });
+ 
         // ¿llevar un registro de archivos por usuario?
 
 

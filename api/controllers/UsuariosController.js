@@ -137,6 +137,7 @@ module.exports = {
                         .meta({ schemaName: 'cot' });
                     respuesta.success = true
                     respuesta.message = cat.success.userUpdated
+                    respuesta["data"] = u;
                     return res.json(respuesta)
                 } else {
                     respuesta.message = cat.errors.serverError
@@ -166,7 +167,7 @@ module.exports = {
     editarUsuario: async (req, res) => {
         let respuesta = { ...cat.resMessage }
         let v = await validate(req.body)
-        console.log(req.body)
+        
         if (v.error) {
             respuesta.message = v.message;
             return res.json(respuesta)
